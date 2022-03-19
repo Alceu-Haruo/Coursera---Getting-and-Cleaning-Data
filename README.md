@@ -1,4 +1,4 @@
-# Coursera---Getting-and-Cleaning-Data
+# Coursera-Getting and Cleaning-Data
 Submission to assignment for the course
 
 This repository is a submission from Alceu.Haruo for Getting and Cleaning Data course project. It has the instructions on how to run analysis on Human Activity recognition dataset.
