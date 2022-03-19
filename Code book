@@ -1,0 +1,74 @@
+Code Book
+
+The run_analysis .R contains a series of scripts to collect and clean the data set to be used in analysis.
+
+The data set for the project was downloaded from:
+https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip 
+
+The files were unzipped to the directory:
+“D:/Coursera/Obtaining and cleaning data/Assignment/UCI HAR Dataset”
+
+For purpose of efficiency the following directory is set in R.
+setwd("D:/Coursera/Obtaining and cleaning data/Assignment/UCI HAR Dataset")
+
+The library dplyr is loaded.
+library(dplyr)
+
+The run_analisis.R contains the following steps:
+
+1.	Load the files into data.frames
+The following scripts loads the files into data frames. There are 8 files which contains data from the subjects and measurements from two groups (x and y).
+features <- read.table("features.txt", col.names = c("id_function", "functions"))
+	type: data.frame, value: 561 obs. of 2 variables 
+activities <- read.table("activity_labels.txt", col.names = c("id_activ","activity"))
+	type: data.frame, value: 6 obs. of 2 variables
+subject_test <- read.table("test/subject_test.txt", col.names = "subject")
+	type: data.frame, value: 2947 obs. of 1 variable
+x_test <- read.table("test/X_test.txt", col.names = features$functions)
+	type: data.frame, value: 2947 obs. of 561 variables
+y_test <- read.table("test/y_test.txt", col.names = "code")
+	type: data.frame, value: 2947 obs. of 1 variable
+subject_train <- read.table("train/subject_train.txt", col.names = "subject")
+	type: data.frame, value: 7352 obs. of 1 variable
+x_train <- read.table("train/X_train.txt", col.names = features$functions)
+	type: data.frame, value: 7352 obs. of 561 variable
+y_train <- read.table("train/y_train.txt", col.names = "code")
+	type: data.frame, value: 7352 obs. of 1 variable
+
+2.	Merges the training and the test sets to create one data set
+The following scripts merge the files loaded in step 1, to create one data set with all the information (merge_data).
+merge_subject <- rbind(subject_test,subject_train)
+	type: data.frame, value: 10299 obs. of 1 variable
+merge_x <- rbind(x_test, x_train)
+	type: data.frame, value: 10299 obs. of 561 variables
+merge_y <- rbind(y_test, y_train)
+	type: data.frame, value: 10299 obs. of 1 variable
+merge_data <- cbind(merge_subject, merge_y, merge_x)
+	type: data.frame, value: 10299 obs. of 563 variables
+
+3.	Extracts only the measurement on the mean and standard deviations for each measurement
+The following script selects from merge_data only the columns that has mean or standard deviations in their measurements, creating a new dataset (Dataset1).
+Dataset1 <- select(merge_data, subject, code, contains("mean") | contains("std"))
+
+4.	Use descriptive activity names to name the activities in the data set
+The following scripts change the content of the column code. So, the code is replaced by the name of the activity. In order to make it more suitable the column name was replaced from ‘code’ to ‘Acitivty’.
+Dataset1$code <- activities[Dataset1$code, 2]
+Dataset1 <- rename(Dataset1, Activity = code)
+ 
+5.	Appropriately labels the data set with descriptive variable names
+The following scripts rename the columns with more intuitive and descriptive names.
+colnames(Dataset1) <- gsub("Acc", "Accelerometer", colnames(Dataset1))
+colnames(Dataset1) <- gsub("Gyro", "Gyroscope", colnames(Dataset1))
+colnames(Dataset1) <- gsub("^t", "Time", colnames(Dataset1))
+colnames(Dataset1) <- gsub("^f", "Frequency", colnames(Dataset1))
+colnames(Dataset1) <- gsub("Mag", "Magnitude", colnames(Dataset1))
+colnames(Dataset1) <- gsub("BodyBody", "Body", colnames(Dataset1))
+
+6.	From the data in step 5, creates a second, independent tide data with the average of each activity and each subject
+The following scripts calculates the average of all the measurements by each subject and activity creating a new data set (Dataset2).
+Dataset2 <- Dataset1 %>% group_by(subject, Activity) %>% summarize_all(mean)
+
+7.	Export data sets
+The following script export data set into txt file. The data set (Dataset2) contains the average of each activity for each subject.
+write.table(Dataset2, file = "Dataset2.txt", row.names = FALSE)
+
