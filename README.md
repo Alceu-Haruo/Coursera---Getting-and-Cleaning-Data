@@ -18,4 +18,3 @@ Files
 
 •	Dataset2.txt is the exported file after performing all the sequences above, to fulfill the request in the submission
 
-•	Dataset1.csv and Dataset2.csv are the exported files after performing all the sequences above
