@@ -1,15 +1,31 @@
 Code Book
 
+The analysis is based on the experiment that have been carried out with a group of 30 volunteers within an age bracket of 19-48 years. Each person performed six
+activities (walking, walking_upstairs, walking_downstairs, sitting, standing, laying) wearing a smartphone on the waist. Using its embedded accelerometer and 
+gyroscope, data was captured of axial linear acceleration and 3-axial angular velocity at a constant rate of 50hz. The obtained dataset has benn randomly partitioned
+into two sets, where 70% of the volunteers was selected for generating the training data and 30% the test data.
+
+The dataset includes the following files:
+=========================================
+- 'README.txt'
+- 'features_info.txt': Shows information about the variables used on the feature vector.
+- 'features.txt': List of all features.
+- 'activity_labels.txt': Links the class labels with their activity name.
+- 'train/X_train.txt': Training set.
+- 'train/y_train.txt': Training labels.
+- 'test/X_test.txt': Test set.
+- 'test/y_test.txt': Test labels
+
 The run_analysis .R contains a series of scripts to collect and clean the data set to be used in analysis.
 
 The data set for the project was downloaded from:
 https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip 
 
 The files were unzipped to the directory:
-“D:/Coursera/Obtaining and cleaning data/Assignment/UCI HAR Dataset”
+“D:/Coursera/Getting_and_Cleaning_Data”
 
 For purpose of efficiency the following directory is set in R.
-setwd("D:/Coursera/Obtaining and cleaning data/Assignment/UCI HAR Dataset")
+setwd("D:/Coursera/Getting_and_Cleaning_Data")
 
 The library dplyr is loaded.
 library(dplyr)
@@ -18,21 +34,21 @@ The run_analisis.R contains the following steps:
 
 1.	Load the files into data.frames
 The following scripts loads the files into data frames. There are 8 files which contains data from the subjects and measurements from two groups (x and y).
-features <- read.table("features.txt", col.names = c("id_function", "functions"))
+features <- read.table("UCI HAR Dataset/features.txt", col.names = c("id_function", "functions"))
 	type: data.frame, value: 561 obs. of 2 variables 
-activities <- read.table("activity_labels.txt", col.names = c("id_activ","activity"))
+activities <- read.table("UCI HAR Dataset/activity_labels.txt", col.names = c("id_activ","activity"))
 	type: data.frame, value: 6 obs. of 2 variables
-subject_test <- read.table("test/subject_test.txt", col.names = "subject")
+subject_test <- read.table("UCI HAR Dataset/test/subject_test.txt", col.names = "subject")
 	type: data.frame, value: 2947 obs. of 1 variable
-x_test <- read.table("test/X_test.txt", col.names = features$functions)
+x_test <- read.table("UCI HAR Dataset/test/X_test.txt", col.names = features$functions)
 	type: data.frame, value: 2947 obs. of 561 variables
-y_test <- read.table("test/y_test.txt", col.names = "code")
+y_test <- read.table("UCI HAR Dataset/test/y_test.txt", col.names = "code")
 	type: data.frame, value: 2947 obs. of 1 variable
-subject_train <- read.table("train/subject_train.txt", col.names = "subject")
+subject_train <- read.table("UCI HAR Dataset/train/subject_train.txt", col.names = "subject")
 	type: data.frame, value: 7352 obs. of 1 variable
-x_train <- read.table("train/X_train.txt", col.names = features$functions)
+x_train <- read.table("UCI HAR Dataset/train/X_train.txt", col.names = features$functions)
 	type: data.frame, value: 7352 obs. of 561 variable
-y_train <- read.table("train/y_train.txt", col.names = "code")
+y_train <- read.table("UCI HAR Dataset/train/y_train.txt", col.names = "code")
 	type: data.frame, value: 7352 obs. of 1 variable
 
 2.	Merges the training and the test sets to create one data set
