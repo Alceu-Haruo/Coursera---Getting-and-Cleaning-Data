@@ -7,6 +7,7 @@ Dataset
 https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip 
 
 Files
+
 •	CodeBook.md a code book that describes the variables, the data, and any transformations or work to clean up the data.
 
 •	run_analysis.R performs the data loading and then performs the 5 steps required in the course project’s definition:
